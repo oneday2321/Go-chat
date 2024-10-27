@@ -101,12 +101,21 @@ func (rpc *RpcLogic) Login(ctx context.Context, args *proto.LoginRequest, reply 
 }
 
 func (rpc *RpcLogic) GetUserInfoByUserId(ctx context.Context, args *proto.GetUserInfoRequest, reply *proto.GetUserInfoResponse) (err error) {
+	// Initialize the reply code to fail
 	reply.Code = config.FailReplyCode
+	
+	// Fetch the user ID from the request arguments
 	userId := args.UserId
 	u := new(dao.User)
+	
+	// Get the username associated with the user ID
 	userName := u.GetUserNameByUserId(userId)
+	
+	// Set the user ID and username in the reply
 	reply.UserId = userId
 	reply.UserName = userName
+	
+	// Update the reply code to success
 	reply.Code = config.SuccessReplyCode
 	return
 }
